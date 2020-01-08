@@ -14,5 +14,6 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Mux(a=outt-1, b=in, sel=load, out=w1); //前のクロックの値を出力したければload = 0としout[t-1]をDFFに渡す　書き換えたければ新たな入力in[t]をDFFに渡す
+    DFF(in=w1, out=out,out=outt-1);                                                    
 }
