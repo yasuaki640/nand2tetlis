@@ -16,5 +16,11 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // Put your code here
+    Inc16 (in=fb, out=w1);
+    Mux16 (a=fb, b=w1, sel=inc, out=w2);//inc == 1の場合、Registerに保持されていた値が上の行でインクリメントされ下の行からoutに出力される
+    Mux16 (a=w2, b=in, sel=load, out=w3);
+    Mux16 (a=w3, b=false, sel=reset, out=w4); //resetの場合、全て0(false)を出力
+    Register (in=w4, load=true, out=out, out=fb);
+
 }
