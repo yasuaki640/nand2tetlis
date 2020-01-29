@@ -1,3 +1,5 @@
 *.cmp
 *.out
 *.tst
+.idea/
+py3env/
