@@ -53,7 +53,9 @@ jump_dict = {
     'JMP': '111'
 }
 
-#ニーモニックに対応するバイナリコードを返す
+# 以下、各ニーモニックに対応するバイナリコードを返す
+
+
 def dest(mnemonic_dest):
     if mnemonic_dest == None:
         return dest_dict['null']
