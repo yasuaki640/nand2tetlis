@@ -1,5 +1,3 @@
-# アセンブラのシンボルを各アドレスに解決するためのクラス
-
 class SymbolTable():
     def __init__(self):
         self.symbol_table = {
@@ -28,19 +26,16 @@ class SymbolTable():
             'KBD': 24576
         }
         self.next_address = 16
-        
-    # テーブルに(symbol,adress)のペアを追加する
+
     def add_entry(self, symbol, address):
         self.symbol_table[symbol] = address
-    
+
     def add_variable(self, symbol):
         self.add_entry(symbol, self.next_address)
         self.next_address += 1
-        
-    # シンボルテーブルは与えられたシンボルを含むかチェック
-    def contains(self, symbol):
-        return self.symbol_table.has_key(symbol)
 
-    # symbolに結びつけられたアドレスを返す
+    def contains(self, symbol):
+        return self.symbol_table.__contains__(symbol)
+
     def get_address(self, symbol):
         return self.symbol_table[symbol]

@@ -1,24 +1,23 @@
-
-from parser import *
+from cmd_parser import *
 from symbol_table import SymbolTable
 import code_writer
-import re # 正規表現モジュール
-import argparse # コマンドライン引数受け取り用モジュール
-import os.path # パスを取得する用
+import re
+import argparse
+import os.path
 
 symbol_pattern = re.compile(r'([0-9]+)|([0-9a-zA-Z_\.\$:]+)')
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Process some integers.') # コマンドライン引数モジュールのインスタンスを生成
+    parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('asm_file', type=str, help='asm file')
 
     args = parser.parse_args()
-    asm_file = args.asm_file # ファイル名を受け取る
+    asm_file = args.asm_file
 
-    save_file = os.path.splitext(asm_file)[0] + ".hack" # コンパイル後の生成ファイル名を指定
+    save_file = os.path.splitext(asm_file)[0] + ".hack"
 
-    st = SymbolTable() # シンボルテーブルの読み込み
+    st = SymbolTable()
 
     with HackParser(asm_file) as hp:
 
