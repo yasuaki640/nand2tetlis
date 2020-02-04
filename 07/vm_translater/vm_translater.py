@@ -13,19 +13,21 @@ def main():
     args = parser.parse_args()
     path = args.path
 
-    if path.endwith(".vm"):
-        with CodeWriter(path[:-3] + ".asm") as code_writer
+    if path.endswith(".vm"):
+        with CodeWriter(path[:-3] + ".asm") as code_writer:
             translate_file(path, code_writer)
-        print"Translated to", path[:-3] + ".asm"
+        print ("Translated to", path[:-3] + ".asm")
     else:
-        if path.endwith("/"):  # ディレクトリだったら
+        if path.endswith("/"):  # ディレクトリだったら
             path = path[:-1]
-        with CodeWriter(path + ".asm") as code_writer:
+        directory_name = path[path.rfind('/')+1:]
+        with CodeWriter(path  + ".asm") as code_writer:
             files = glob.glob("%s/*" % path)
             for file in files:
                 if file.endswith(".vm"):
                     translate_file(file, code_writer)
-        print"Translated to", path + ".asm"
+        print ("Translated to", path + ".asm")
+
 
 def translate_file(file, code_writer):
     filename, _ = os.path.splitext(os.path.basename(file))
@@ -43,7 +45,6 @@ def translate_file(file, code_writer):
 
             parser.advance()
 
+
 if __name__ == '__main__':
     main()
-        
-    

@@ -30,7 +30,7 @@ class CodeWriter():
 
         if command == C_PUSH:
             if segment == "constant":
-                self.wrte_codes([
+                self.write_codes([
                     '@%d' % index,
                     'D=A'
                 ])
@@ -41,10 +41,10 @@ class CodeWriter():
                 self.write_push_from_static_segment(segment, index)
             if segment == "static":
                 self.write_codes([
-                    "@%s.%d" (self.current_translated_file_name, index),
+                    "@%s.%d" % (self.current_translated_file_name, index),
                 ])
-                self.write_coode('D=M')
-                self.wrte_push_from_d_register()
+                self.write_code('D=M')
+                self.write_push_from_d_register()
 
         elif command == C_POP:
             if segment in ["local", "argument", "this", "that"]:
@@ -59,7 +59,7 @@ class CodeWriter():
                 ])
                 self.write_code('M=D')
 
-    def current_translated_file_name(self, file_name):
+    def set_current_translated_file_name(self, file_name):
         self.current_translated_file_name = file_name
 
     def write_binary_operation(self, command):
