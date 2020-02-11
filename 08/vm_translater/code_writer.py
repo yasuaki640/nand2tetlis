@@ -204,7 +204,6 @@ class CodeWriter():
         self.return_label_num += 1
         return '_RETURN_LABEL_' + str(self.return_label_num)
 
-    #現在の位置をラベル付けする
     def write_named_label(self, label):
         self.write_code("(%s)" % self.get_label_name(label))
 
@@ -226,7 +225,6 @@ class CodeWriter():
             'M=D'
         ])
 
-    #無条件の移動命令を行う
     def write_goto(self, label):
         self.write_codes([
             '@%s' % self.get_label_name(label),
@@ -240,8 +238,7 @@ class CodeWriter():
             '@%s' % self.get_label_name(label),
             'D;JNE'
         ])
-    
-    #グローバルスタックに関数に必要なセグメントを書き込む
+
     def write_call(self, function_name, num_of_args):
         return_label = self.get_new_return_label()
         self.write_codes([
@@ -291,7 +288,7 @@ class CodeWriter():
             '0;JMP',  # goto function
             '(%s)' % return_label
         ])
-    #呼び出し元へリターンする
+
     def write_return(self):
         self.write_codes([
             '@LCL',
@@ -349,7 +346,6 @@ class CodeWriter():
             '0;JMP'  # goto return-address
         ])
 
-    # n個のローカル変数を持つfunction_nameという名前の関数を定義する
     def write_function(self, function_name, num_of_locals):
         self.write_codes([
             '(%s)' % function_name,

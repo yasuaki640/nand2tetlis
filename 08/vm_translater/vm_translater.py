@@ -16,19 +16,19 @@ def main():
     args = parser.parse_args()
     path = args.path
 
-    if path.endswith(".vm"):    # file
+    if path.endswith(".vm"):  # file
         with CodeWriter(path[:-3] + ".asm") as code_writer:
             translate_file(path, code_writer)
-        print("Translated to", path[:-3] + ".asm")
-    else:                       # directory
+        print ("Translated to", path[:-3] + ".asm")
+    else:  # directory
         if path.endswith("/"):
             path = path[:-1]
-        with CodeWriter(path + ".asm") as code_writer:
+        with CodeWriter(path + "/" + os.path.basename(path) + ".asm") as code_writer:
             files = glob.glob("%s/*" % path)
             for file in files:
                 if file.endswith(".vm"):
                     translate_file(file, code_writer)
-        print("Translated to", path + ".asm")
+        print ("Translated to", path + "/" + os.path.basename(path) + ".asm")
 
 
 def translate_file(file, code_writer):
@@ -37,13 +37,27 @@ def translate_file(file, code_writer):
     with Parser(file) as parser:
         parser.advance()
         while parser.current_command != None:
+
+            code_writer.write_code("// "+" ".join(parser.current_command))
+
             if parser.command_type() == C_ARITHMETIC:
                 code_writer.write_arithmetic(parser.arg1())
             elif parser.command_type() == C_PUSH:
                 code_writer.write_push_pop(C_PUSH, parser.arg1(), parser.arg2())
             elif parser.command_type() == C_POP:
                 code_writer.write_push_pop(C_POP, parser.arg1(), parser.arg2())
-
+            elif parser.command_type() == C_LABEL:
+                code_writer.write_named_label(parser.arg1())
+            elif parser.command_type() == C_GOTO:
+                code_writer.write_goto(parser.arg1())
+            elif parser.command_type() == C_IF:
+                code_writer.write_if(parser.arg1())
+            elif parser.command_type() == C_FUNCTION:
+                code_writer.write_function(parser.arg1(), parser.arg2())
+            elif parser.command_type() == C_RETURN:
+                code_writer.write_return()
+            elif parser.command_type() == C_CALL:
+                code_writer.write_call(parser.arg1(),parser.arg2())
             parser.advance()
 
 
